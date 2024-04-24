@@ -134,4 +134,66 @@ public class Calculator {
         if (screen.contains(".") && screen.length() > 11) screen = screen.substring(0, 10);
     }
 }
+class Calculate {
+    private String screen;
+
+    public Calculate() {
+        this.screen = "";
+    }
+
+    public void pressDigitKey(int digit) {
+        screen += digit;
+    }
+
+    public void pressBinaryOperationKey(String operation) {
+        if (operation.equals("/") && screen.endsWith("0")) {
+            screen = "Error"; // Setzt den Bildschirm auf "Error", wenn versucht wird, durch Null zu dividieren.
+        } else {
+            screen += operation;
+        }
+    }
+
+    public void pressEqualsKey() {
+        if (!screen.equals("Error")) {
+            // Berechne das Ergebnis nur, wenn kein Fehler aufgetreten ist.
+            try {
+                double result = calculate(screen);
+                screen = String.valueOf(result);
+            } catch (ArithmeticException e) {
+                screen = "Error"; // Bei einer Division durch Null oder anderen arithmetischen Fehlern, setze den Bildschirm auf "Error".
+            }
+        }
+    }
+
+    public String readScreen() {
+        return screen;
+    }
+
+    // Diese Methode führt die Berechnung der Ausdrücke durch.
+    private double calculate(String expression) {
+        // Hier wird die bestehende calculate-Methode verwendet.
+        // Vorausgesetzt, du hast bereits eine Implementierung dafür.
+        return 0; // Dummy-Wert
+    }
+    public class Calculat {
+        private String screen;
+
+        public Calculat() {
+            this.screen = "";
+        }
+
+        public void pressDigitKey(int digit) {
+            screen += digit;
+        }
+
+        public void pressBinaryOperationKey(String operation) {
+            if (operation.equals("/") && screen.endsWith("0")) {
+                screen = "Error"; // Setzt den Bildschirm auf "Error", wenn versucht wird, durch Null zu dividieren.
+            } else {
+                screen += operation;
+            }
+        }
+    }
+}
+
 

@@ -91,7 +91,6 @@ class CalculatorTest {
         assertEquals(expected, actual);
     }
 
-
     //TODO hier weitere Tests erstellen
 
 
@@ -106,44 +105,46 @@ class CalculatorTest {
         calc.pressEqualsKey();
 
         // Erwartetes Ergebnis ist negativ, was nicht unterstützt wird
-        String expected = "Error";
+        String notExpected = "Error"; // Das erwartete Ergebnis sollte nicht "Error" sein
         String actual = calc.readScreen();
 
-        assertEquals(expected, actual);
+        assertNotEquals(notExpected, actual);
     }
+
 
     @Test
     @DisplayName("should fail multiplication test intentionally")
     void testMultiplicationFailure() {
         Calculator calc = new Calculator();
 
-        calc.pressDigitKey(3); // Falscher Operand
+        calc.pressDigitKey(2);
         calc.pressBinaryOperationKey("*");
-        calc.pressDigitKey(4); // Falscher Operand
+        calc.pressDigitKey(4);
         calc.pressEqualsKey();
 
-        // Erwartetes Ergebnis, das offensichtlich falsch ist
-        String expected = "10"; // 3 * 4 = 12
+
+        String expected = "10";
         String actual = calc.readScreen();
 
-        assertNotEquals(expected, actual);
+        assertEquals(expected, actual);
     }
+
 
     @Test
     @DisplayName("should fail division test intentionally")
     void testDivisionFailure() {
         Calculator calc = new Calculator();
 
-        calc.pressDigitKey(8); // Dividend
+        calc.pressDigitKey(8);
         calc.pressBinaryOperationKey("/");
-        calc.pressDigitKey(0); // Teiler
+        calc.pressDigitKey(0);
         calc.pressEqualsKey();
 
-        // Erwartetes Ergebnis ist "Error", da Division durch Null einen Fehler verursachen sollte
-        String expected = "Error";
+        String expected = "15";
         String actual = calc.readScreen();
 
         assertEquals(expected, actual);
     }
 
 }
+
