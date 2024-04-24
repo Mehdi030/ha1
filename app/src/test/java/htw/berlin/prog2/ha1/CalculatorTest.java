@@ -4,6 +4,9 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;import static org.junit.jupiter.api.Assertions.assertNotEquals;
+
 
 @DisplayName("Retro calculator")
 class CalculatorTest {
@@ -90,5 +93,22 @@ class CalculatorTest {
 
 
     //TODO hier weitere Tests erstellen
-}
 
+
+    @Test
+    @DisplayName("should fail subtraction test with negative result")
+    void testSubtractionFailure() {
+        Calculator calc = new Calculator();
+
+        calc.pressDigitKey(3); // Wähle eine kleinere Zahl
+        calc.pressBinaryOperationKey("-");
+        calc.pressDigitKey(5); // Wähle eine größere Zahl
+        calc.pressEqualsKey();
+
+        // Erwartetes Ergebnis ist negativ, was nicht unterstützt wird
+        String expected = "-2";
+        String actual = calc.readScreen();
+
+        assertEquals(expected, actual);
+    }
+}
