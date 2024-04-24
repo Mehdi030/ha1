@@ -111,6 +111,7 @@ class CalculatorTest {
 
         assertEquals(expected, actual);
     }
+
     @Test
     @DisplayName("should fail multiplication test intentionally")
     void testMultiplicationFailure() {
@@ -127,6 +128,7 @@ class CalculatorTest {
 
         assertNotEquals(expected, actual);
     }
+
     @Test
     @DisplayName("should fail division test intentionally")
     void testDivisionFailure() {
@@ -143,6 +145,5 @@ class CalculatorTest {
 
         assertEquals(expected, actual);
     }
-
 
 }
