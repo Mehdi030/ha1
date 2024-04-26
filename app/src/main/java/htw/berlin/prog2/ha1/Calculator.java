@@ -1,18 +1,10 @@
 package htw.berlin.prog2.ha1;
 
-/**
- * Eine Klasse, die das Verhalten des Online Taschenrechners imitiert, welcher auf
- * https://www.online-calculator.com/ aufgerufen werden kann (ohne die Memory-Funktionen)
- * und dessen Bildschirm bis zu zehn Ziffern plus einem Dezimaltrennzeichen darstellen kann.
- * Enthält mit Absicht noch diverse Bugs oder unvollständige Funktionen.
- */
 public class Calculator {
 
     private String screen = "0";
-
-    private double latestValue;
-
-    private String latestOperation = "";
+    private double latestValue; // Instanzvariable für den zuletzt eingegebenen Wert
+    private String latestOperation = ""; // Instanzvariable für die zuletzt eingegebene Operation
 
     /**
      * @return den aktuellen Bildschirminhalt als String
@@ -86,7 +78,6 @@ public class Calculator {
         screen = Double.toString(result);
         if (screen.equals("NaN")) screen = "Error";
         if (screen.contains(".") && screen.length() > 11) screen = screen.substring(0, 10);
-
     }
 
     /**
@@ -121,79 +112,35 @@ public class Calculator {
      * und das Ergebnis direkt angezeigt.
      */
     public void pressEqualsKey() {
-        var result = switch (latestOperation) {
-            case "+" -> latestValue + Double.parseDouble(screen);
-            case "-" -> latestValue - Double.parseDouble(screen);
-            case "x" -> latestValue * Double.parseDouble(screen);
-            case "/" -> latestValue / Double.parseDouble(screen);
-            default -> throw new IllegalArgumentException();
-        };
-        screen = Double.toString(result);
-        if (screen.equals("Infinity")) screen = "Error";
-        if (screen.endsWith(".0")) screen = screen.substring(0, screen.length() - 2);
-        if (screen.contains(".") && screen.length() > 11) screen = screen.substring(0, 10);
-    }
-}
-class Calculate {
-    private String screen;
+        if (!latestOperation.isEmpty()) {
+            double currentNumber = Double.parseDouble(screen);
+            double result;
 
-    public Calculate() {
-        this.screen = "";
-    }
-
-    public void pressDigitKey(int digit) {
-        screen += digit;
-    }
-
-    public void pressBinaryOperationKey(String operation) {
-        if (operation.equals("/") && screen.endsWith("0")) {
-            screen = "Error"; // Setzt den Bildschirm auf "Error", wenn versucht wird, durch Null zu dividieren.
-        } else {
-            screen += operation;
-        }
-    }
-
-    public void pressEqualsKey() {
-        if (!screen.equals("Error")) {
-            // Berechne das Ergebnis nur, wenn kein Fehler aufgetreten ist.
-            try {
-                double result = calculate(screen);
-                screen = String.valueOf(result);
-            } catch (ArithmeticException e) {
-                screen = "Error"; // Bei einer Division durch Null oder anderen arithmetischen Fehlern, setze den Bildschirm auf "Error".
+            switch (latestOperation) {
+                case "+":
+                    result = latestValue + currentNumber;
+                    break;
+                case "-":
+                    result = latestValue - currentNumber;
+                    break;
+                case "x":
+                    result = latestValue * currentNumber;
+                    break;
+                case "/":
+                    if (currentNumber == 0) {
+                        screen = "Error";
+                        return;
+                    }
+                    result = latestValue / currentNumber;
+                    break;
+                default:
+                    throw new IllegalArgumentException();
             }
-        }
-    }
 
-    public String readScreen() {
-        return screen;
-    }
-
-    // Diese Methode führt die Berechnung der Ausdrücke durch.
-    private double calculate(String expression) {
-        // Hier wird die bestehende calculate-Methode verwendet.
-        // Vorausgesetzt, du hast bereits eine Implementierung dafür.
-        return 0; // Dummy-Wert
-    }
-    public class Calculat {
-        private String screen;
-
-        public Calculat() {
-            this.screen = "";
-        }
-
-        public void pressDigitKey(int digit) {
-            screen += digit;
-        }
-
-        public void pressBinaryOperationKey(String operation) {
-            if (operation.equals("/") && screen.endsWith("0")) {
-                screen = "Error"; // Setzt den Bildschirm auf "Error", wenn versucht wird, durch Null zu dividieren.
-            } else {
-                screen += operation;
-            }
+            screen = Double.toString(result);
+            if (screen.equals("Infinity")) screen = "Error";
+            if (screen.endsWith(".0")) screen = screen.substring(0, screen.length() - 2);
+            if (screen.contains(".") && screen.length() > 11) screen = screen.substring(0, 10);
         }
     }
 }
-
-

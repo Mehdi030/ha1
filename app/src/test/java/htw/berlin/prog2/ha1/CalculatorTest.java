@@ -5,8 +5,6 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;import static org.junit.jupiter.api.Assertions.assertNotEquals;
-
 
 @DisplayName("Retro calculator")
 class CalculatorTest {
@@ -91,30 +89,27 @@ class CalculatorTest {
         assertEquals(expected, actual);
     }
 
-    //TODO hier weitere Tests erstellen
-
-
     @Test
-    @DisplayName("should fail subtraction test with negative result")
-    void testSubtractionFailure() {
+    @DisplayName("should pass subtraction test with positive or zero result")
+    void testSubtraction() {
         Calculator calc = new Calculator();
 
-        calc.pressDigitKey(3); // Wähle eine kleinere Zahl
+        calc.pressDigitKey(5); // Wähle eine größere oder gleiche Zahl
         calc.pressBinaryOperationKey("-");
-        calc.pressDigitKey(5); // Wähle eine größere Zahl
+        calc.pressDigitKey(3); // Wähle eine kleinere oder gleiche Zahl
         calc.pressEqualsKey();
 
-        // Erwartetes Ergebnis ist negativ, was nicht unterstützt wird
-        String notExpected = "Error"; // Das erwartete Ergebnis sollte nicht "Error" sein
+        // Erwartetes Ergebnis ist positiv oder null
+        String expected = "2"; // Das erwartete Ergebnis von 5 - 3 ist 2
         String actual = calc.readScreen();
 
-        assertNotEquals(notExpected, actual);
+        assertEquals(expected, actual);
     }
 
 
     @Test
-    @DisplayName("should fail multiplication test intentionally")
-    void testMultiplicationFailure() {
+    @DisplayName("should pass multiplication test")
+    void testMultiplication() {
         Calculator calc = new Calculator();
 
         calc.pressDigitKey(2);
@@ -122,17 +117,15 @@ class CalculatorTest {
         calc.pressDigitKey(4);
         calc.pressEqualsKey();
 
-
-        String expected = "10";
+        String expected = "8"; // Das korrekte Ergebnis von 2 * 4 ist 8
         String actual = calc.readScreen();
 
         assertEquals(expected, actual);
     }
 
-
     @Test
-    @DisplayName("should fail division test intentionally")
-    void testDivisionFailure() {
+    @DisplayName("should pass division test")
+    void testDivision() {
         Calculator calc = new Calculator();
 
         calc.pressDigitKey(8);
@@ -140,11 +133,9 @@ class CalculatorTest {
         calc.pressDigitKey(0);
         calc.pressEqualsKey();
 
-        String expected = "15";
+        String expected = "Error";
         String actual = calc.readScreen();
 
         assertEquals(expected, actual);
     }
-
 }
-
