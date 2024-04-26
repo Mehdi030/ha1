@@ -112,16 +112,18 @@ class CalculatorTest {
     void testMultiplication() {
         Calculator calc = new Calculator();
 
-        calc.pressDigitKey(2);
-        calc.pressBinaryOperationKey("*");
         calc.pressDigitKey(4);
+        calc.pressBinaryOperationKey("*");
+        calc.pressDigitKey(5);
         calc.pressEqualsKey();
 
-        String expected = "8"; // Das korrekte Ergebnis von 2 * 4 ist 8
+        String expected = "20";
         String actual = calc.readScreen();
 
         assertEquals(expected, actual);
     }
+
+
 
     @Test
     @DisplayName("should pass division test")
