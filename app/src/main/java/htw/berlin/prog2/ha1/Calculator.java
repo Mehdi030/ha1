@@ -54,9 +54,20 @@ public class Calculator {
      * @param operation "+" für Addition, "-" für Substraktion, "x" für Multiplikation, "/" für Division
      */
     public void pressBinaryOperationKey(String operation) {
-        latestValue = Double.parseDouble(screen);
-        latestOperation = operation;
+        double currentNumber = Double.parseDouble(screen);
+
+        if (operation.equals("/") && currentNumber == 0) {
+            screen = "Error";
+            latestOperation = "";
+            latestValue = 0.0;
+        } else {
+            latestValue = currentNumber;
+            latestOperation = operation;
+            screen = "0";
+        }
     }
+
+
 
     /**
      * Empfängt den Wert einer gedrückten unären Operationstaste, also eine der drei Operationen
@@ -114,7 +125,7 @@ public class Calculator {
     public void pressEqualsKey() {
         if (!latestOperation.isEmpty()) {
             double currentNumber = Double.parseDouble(screen);
-            double result;
+            double result = 0.0;
 
             switch (latestOperation) {
                 case "+":
@@ -129,18 +140,30 @@ public class Calculator {
                 case "/":
                     if (currentNumber == 0) {
                         screen = "Error";
-                        return;
+                        return; // Exit the method to prevent further calculation
                     }
                     result = latestValue / currentNumber;
                     break;
                 default:
-                    throw new IllegalArgumentException();
+                    throw new IllegalArgumentException(latestOperation + " is not supported");
             }
 
-            screen = Double.toString(result);
-            if (screen.equals("Infinity")) screen = "Error";
-            if (screen.endsWith(".0")) screen = screen.substring(0, screen.length() - 2);
-            if (screen.contains(".") && screen.length() > 11) screen = screen.substring(0, 10);
+            screen = formatResult(result);
         }
     }
+
+    private String formatResult(double result) {
+        String formattedResult = Double.toString(result);
+        if (formattedResult.equals("Infinity") || formattedResult.equals("-Infinity")) {
+            return "Error";
+        }
+        if (formattedResult.endsWith(".0")) {
+            formattedResult = formattedResult.substring(0, formattedResult.length() - 2);
+        }
+        if (formattedResult.contains(".") && formattedResult.length() > 11) {
+            formattedResult = formattedResult.substring(0, 10);
+        }
+        return formattedResult;
+    }
+
 }
