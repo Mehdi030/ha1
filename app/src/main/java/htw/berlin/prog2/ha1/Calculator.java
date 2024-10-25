@@ -122,5 +122,4 @@ public class Calculator {
         }
         return formattedResult; // Formatiertes Ergebnis zurückgeben
     }
-
 }
