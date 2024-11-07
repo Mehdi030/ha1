@@ -108,37 +108,21 @@ class CalculatorTest {
     }
 
     @Test
-    @DisplayName("should display result after multiplying two positive numbers")
-    void testMultiplication() {
+    @DisplayName("should correctly add two negative numbers")
+    void testAdditionOfNegativeNumbers() {
         Calculator calc = new Calculator();
 
-        calc.pressDigitKey(6);
-        calc.pressBinaryOperationKey("x");
-        calc.pressDigitKey(7);
-        calc.pressEqualsKey();
-
-        String expected = "42";
-        String actual = calc.readScreen();
-
-        assertEquals(expected, actual);
-    }
-
-    @Test
-    @DisplayName("should display zero when adding zero to a number")
-    void testAdditionWithZero() {
-        Calculator calc = new Calculator();
-
-        calc.pressDigitKey(5);
+        calc.pressNegativeKey();
+        calc.pressDigitKey(4);
         calc.pressBinaryOperationKey("+");
-        calc.pressDigitKey(0);
+        calc.pressNegativeKey();
+        calc.pressDigitKey(6);
         calc.pressEqualsKey();
 
-        String expected = "5";
+        String expected = "-10"; // Erwartetes Ergebnis: -4 + (-6) = -10
         String actual = calc.readScreen();
 
         assertEquals(expected, actual);
     }
-
-    //TODO hier weitere Tests erstellen
 }
 
