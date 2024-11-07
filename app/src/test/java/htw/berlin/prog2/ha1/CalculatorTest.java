@@ -108,21 +108,21 @@ class CalculatorTest {
     }
 
     @Test
-    @DisplayName("should correctly add two negative numbers")
-    void testAdditionOfNegativeNumbers() {
+    @DisplayName("should correctly multiply a positive number with a negative number")
+    void testMultiplicationPositiveAndNegative() {
         Calculator calc = new Calculator();
 
-        calc.pressNegativeKey();
-        calc.pressDigitKey(4);
-        calc.pressBinaryOperationKey("+");
-        calc.pressNegativeKey();
-        calc.pressDigitKey(6);
-        calc.pressEqualsKey();
+        calc.pressDigitKey(5);             // 5 eingeben
+        calc.pressBinaryOperationKey("x"); // x drücken
+        calc.pressNegativeKey();           // - drücken
+        calc.pressDigitKey(3);             // 3 eingeben
+        calc.pressEqualsKey();             // = drücken
 
-        String expected = "-10"; // Erwartetes Ergebnis: -4 + (-6) = -10
+        String expected = "15";           // Erwartetes Ergebnis: 15
         String actual = calc.readScreen();
 
         assertEquals(expected, actual);
     }
 }
+
 
