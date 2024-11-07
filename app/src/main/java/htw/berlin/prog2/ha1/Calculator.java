@@ -6,11 +6,9 @@ public class Calculator {
     private double latestValue;
     private String latestOperation = "";
 
-
     public String readScreen() {
         return screen;
     }
-
 
     public void pressDigitKey(int digit) {
         if (digit > 9 || digit < 0) throw new IllegalArgumentException(); // Ungültige Ziffer
@@ -20,13 +18,11 @@ public class Calculator {
         screen = screen + digit; // Ziffer an Bildschirm anhängen
     }
 
-
     public void pressClearKey() {
         screen = "0"; // Bildschirm auf "0" setzen
         latestOperation = ""; // Letzte Operation zurücksetzen
         latestValue = 0.0; // Zuletzt eingegebener Wert zurücksetzen
     }
-
 
     public void pressBinaryOperationKey(String operation) {
         double currentNumber = Double.parseDouble(screen); // Aktuellen Bildschirmwert speichern
@@ -43,7 +39,6 @@ public class Calculator {
         }
     }
 
-
     public void pressUnaryOperationKey(String operation) {
         latestValue = Double.parseDouble(screen); // Aktuellen Wert speichern
         latestOperation = operation; // Setze die Operation
@@ -59,16 +54,21 @@ public class Calculator {
         if (screen.contains(".") && screen.length() > 11) screen = screen.substring(0, 10); // Bildschirmformatierung
     }
 
-
     public void pressDotKey() {
         if (!screen.contains(".")) screen = screen + "."; // Dezimaltrennzeichen hinzufügen
     }
 
-
+    // Methode für das Vorzeichen umkehren
     public void pressNegativeKey() {
-        screen = screen.startsWith("-") ? screen.substring(1) : "-" + screen; // Vorzeichen umkehren
+        // Vorzeichen der Zahl auf dem Bildschirm ändern und gleichzeitig den `latestValue` ebenfalls anpassen
+        try {
+            double currentValue = Double.parseDouble(screen); // Den aktuellen Bildschirmwert als Zahl parsen
+            latestValue = -currentValue; // Setze den `latestValue` auf den negativen Wert
+            screen = Double.toString(latestValue); // Setze den neuen Wert auf dem Bildschirm
+        } catch (NumberFormatException e) {
+            // Fehler beim Umkehren des Vorzeichens vermeiden (z.B. bei "Error")
+        }
     }
-
 
     public void pressEqualsKey() {
         if (!latestOperation.isEmpty()) { // Prüfen, ob eine Operation gesetzt ist
@@ -107,7 +107,6 @@ public class Calculator {
             screen = formatResult(result); // Ergebnis formatieren und anzeigen
         }
     }
-
 
     private String formatResult(double result) {
         String formattedResult = Double.toString(result); // Ergebnis in String umwandeln
