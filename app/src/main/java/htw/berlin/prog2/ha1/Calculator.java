@@ -25,19 +25,27 @@ public class Calculator {
     }
 
     public void pressBinaryOperationKey(String operation) {
-        double currentNumber = Double.parseDouble(screen); // Aktuellen Bildschirmwert speichern
+        double currentNumber = Double.parseDouble(screen);
 
-        // Division durch Null prüfen
+        // Überprüfen, ob es eine Division durch Null gibt
         if (operation.equals("/") && currentNumber == 0) {
-            screen = "Error"; // Fehler anzeigen
-            latestOperation = ""; // Letzte Operation zurücksetzen
-            latestValue = 0.0; // Zuletzt eingegebener Wert zurücksetzen
+            screen = "Error";
+            latestOperation = "";
+            latestValue = 0.0;
         } else {
-            latestValue = currentNumber; // Speichere den aktuellen Wert
-            latestOperation = operation; // Setze die Operation
+            if (operation.equals("-") && currentNumber < 0) {
+                // Wenn die Subtraktion eine negative Zahl betrifft, behandeln wir dies als Addition
+                latestValue = latestValue + (-currentNumber); // Addition statt Subtraktion der negativen Zahl
+            } else {
+                latestValue = currentNumber;
+            }
+
+            latestOperation = operation;
             screen = "0"; // Bildschirm zurücksetzen
         }
     }
+
+
 
     public void pressUnaryOperationKey(String operation) {
         latestValue = Double.parseDouble(screen); // Aktuellen Wert speichern
@@ -58,17 +66,24 @@ public class Calculator {
         if (!screen.contains(".")) screen = screen + "."; // Dezimaltrennzeichen hinzufügen
     }
 
-    // Methode für das Vorzeichen umkehren
     public void pressNegativeKey() {
-        // Vorzeichen der Zahl auf dem Bildschirm ändern und gleichzeitig den `latestValue` ebenfalls anpassen
-        try {
-            double currentValue = Double.parseDouble(screen); // Den aktuellen Bildschirmwert als Zahl parsen
-            latestValue = -currentValue; // Setze den `latestValue` auf den negativen Wert
-            screen = Double.toString(latestValue); // Setze den neuen Wert auf dem Bildschirm
-        } catch (NumberFormatException e) {
-            // Fehler beim Umkehren des Vorzeichens vermeiden (z.B. bei "Error")
+        // Vorzeichen umkehren
+        if (screen.startsWith("-")) {
+            screen = screen.substring(1); // Vorzeichen entfernen
+        } else {
+            screen = "-" + screen; // Vorzeichen setzen
+        }
+
+        // Wenn eine binäre Operation läuft, müssen wir sicherstellen, dass der Wert korrekt übernommen wird
+        if (!latestOperation.isEmpty()) {
+            latestValue = Double.parseDouble(screen); // Den Wert nach der Vorzeichenänderung in latestValue speichern
+        } else {
+            // Falls keine Operation ausgeführt wurde, den aktuellen Wert in latestValue übernehmen
+            latestValue = Double.parseDouble(screen);
         }
     }
+
+
 
     public void pressEqualsKey() {
         if (!latestOperation.isEmpty()) { // Prüfen, ob eine Operation gesetzt ist
@@ -87,7 +102,8 @@ public class Calculator {
                     result = latestValue + currentNumber; // Addition
                     break;
                 case "-":
-                    result = latestValue - currentNumber; // Subtraktion
+                    // Wenn der zweite Operand negativ ist, wird die Subtraktion wie Addition behandelt
+                    result = latestValue + (-currentNumber); // Addition von positiven Werten
                     break;
                 case "x":
                     result = latestValue * currentNumber; // Multiplikation
@@ -107,6 +123,7 @@ public class Calculator {
             screen = formatResult(result); // Ergebnis formatieren und anzeigen
         }
     }
+
 
     private String formatResult(double result) {
         String formattedResult = Double.toString(result); // Ergebnis in String umwandeln
