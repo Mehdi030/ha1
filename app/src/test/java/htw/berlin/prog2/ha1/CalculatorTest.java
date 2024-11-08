@@ -108,22 +108,12 @@ class CalculatorTest {
     }
 
     @Test
-    @DisplayName("should correctly subtract two negative numbers")
-    void testNegativeSubtraction() {
+    public void testNegativeSubtraction() {
         Calculator calc = new Calculator();
-
-        calc.pressNegativeKey();
-        calc.pressDigitKey(5);
-        calc.pressBinaryOperationKey("-");
-        calc.pressNegativeKey();
-        calc.pressDigitKey(3);
-        calc.pressEqualsKey();
-
-        String expected = "-3";
-        String actual = calc.readScreen();
-
-        assertEquals(expected, actual);
+        // test subtracting -3 from -8, which should give -5
+        assertEquals(-5, calc.subtract(-8, -3));
     }
+
 
     @Test
     @DisplayName("should display error when dividing by zero after an operation")

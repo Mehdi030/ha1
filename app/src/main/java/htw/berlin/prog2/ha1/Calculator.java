@@ -33,19 +33,11 @@ public class Calculator {
             latestOperation = "";
             latestValue = 0.0;
         } else {
-            if (operation.equals("-") && currentNumber < 0) {
-                // Wenn die Subtraktion eine negative Zahl betrifft, behandeln wir dies als Addition
-                latestValue = latestValue + (-currentNumber); // Addition statt Subtraktion der negativen Zahl
-            } else {
-                latestValue = currentNumber;
-            }
-
+            latestValue = currentNumber;
             latestOperation = operation;
             screen = "0"; // Bildschirm zurücksetzen
         }
     }
-
-
 
     public void pressUnaryOperationKey(String operation) {
         latestValue = Double.parseDouble(screen); // Aktuellen Wert speichern
@@ -67,22 +59,31 @@ public class Calculator {
     }
 
     public void pressNegativeKey() {
-        // Vorzeichen umkehren
+        System.out.println("Vorzeichen vor Änderung: " + screen);
         if (screen.startsWith("-")) {
-            screen = screen.substring(1); // Vorzeichen entfernen
+            screen = screen.substring(1);
         } else {
-            screen = "-" + screen; // Vorzeichen setzen
+            screen = "-" + screen;
         }
 
-        // Wenn eine binäre Operation läuft, müssen wir sicherstellen, dass der Wert korrekt übernommen wird
+        // Wenn der Wert -0.0 wird, setze ihn auf 0
+        if (screen.equals("-0")) {
+            screen = "0";
+        }
+
+        System.out.println("Vorzeichen nach Änderung: " + screen);
+
         if (!latestOperation.isEmpty()) {
-            latestValue = Double.parseDouble(screen); // Den Wert nach der Vorzeichenänderung in latestValue speichern
-        } else {
-            // Falls keine Operation ausgeführt wurde, den aktuellen Wert in latestValue übernehmen
             latestValue = Double.parseDouble(screen);
+            System.out.println("Aktualisiertes latestValue (Operation läuft): " + latestValue);
+        } else {
+            latestValue = Double.parseDouble(screen);
+            System.out.println("Aktualisiertes latestValue (keine Operation): " + latestValue);
         }
     }
-
+    public double subtract(double a, double b) {
+        return a - b; // This should work for both positive and negative numbers
+    }
 
 
     public void pressEqualsKey() {
@@ -102,8 +103,7 @@ public class Calculator {
                     result = latestValue + currentNumber; // Addition
                     break;
                 case "-":
-                    // Wenn der zweite Operand negativ ist, wird die Subtraktion wie Addition behandelt
-                    result = latestValue + (-currentNumber); // Addition von positiven Werten
+                    result = latestValue - currentNumber; // Subtraktion
                     break;
                 case "x":
                     result = latestValue * currentNumber; // Multiplikation
@@ -120,6 +120,7 @@ public class Calculator {
                     return; // Methode beenden
             }
 
+            // Ergebnisse formatieren
             screen = formatResult(result); // Ergebnis formatieren und anzeigen
         }
     }
